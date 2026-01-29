@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>امتحان الطالب - تجريبي</title>
+    <title>امتحان التشريح - Anatomy Exam</title>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script type="text/javascript">
        (function(){
-          // تفعيل المكتبة بالمفتاح الخاص بك
+          // Public Key
           emailjs.init("o-XlLiO769IOYV68R");
        })();
     </script>
@@ -34,6 +34,12 @@
             color: #1877f2;
             margin-bottom: 30px;
         }
+        .english-text {
+            direction: ltr;
+            text-align: left;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 18px;
+        }
         .form-group {
             margin-bottom: 20px;
         }
@@ -55,6 +61,12 @@
         input[type="text"]:focus {
             border-color: #1877f2;
             outline: none;
+        }
+        .note-text {
+            font-size: 13px;
+            color: #606770;
+            margin-top: 5px;
+            display: block;
         }
         .btn {
             display: block;
@@ -88,17 +100,24 @@
         .options-list li {
             margin: 10px 0;
             background: #fff;
-            padding: 12px;
             border: 1px solid #ddd;
             border-radius: 6px;
-            cursor: pointer;
             transition: background 0.2s;
         }
         .options-list li:hover {
             background-color: #e7f3ff;
             border-color: #1877f2;
         }
-        /* كلاسات التحكم في الظهور والاختفاء */
+        /* جعل منطقة النقر تغطي كامل المربع */
+        .options-list li label {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            cursor: pointer;
+            font-weight: normal;
+            margin: 0;
+            box-sizing: border-box;
+        }
         .hidden {
             display: none !important;
         }
@@ -107,64 +126,73 @@
 <body>
 
     <div class="container" id="loginPanel">
-        <h1>تسجيل بيانات الطالب</h1>
+        <h1>Anatomy Exam Login</h1>
         <div class="form-group">
-            <label>الاسم الثلاثي:</label>
+            <label>الاسم الثلاثي (Full Name):</label>
             <input type="text" id="studentName" placeholder="مثال: محمد أحمد علي">
         </div>
         <div class="form-group">
-            <label>معرف التيليجرام (@username):</label>
-            <input type="text" id="telegramID" placeholder="@example">
+            <label>معرف التيليجرام (Telegram User):</label>
+            <input type="text" id="telegramID" placeholder="@username">
+            <small class="note-text">معرف التيليكرام سيستخدم للتواصل معك في حال كنت الأعلى درجة</small>
         </div>
-        <button class="btn" onclick="startExam()">دخول الامتحان</button>
+        <button class="btn" onclick="startExam()">Start Exam</button>
     </div>
 
     <div class="container hidden" id="examPanel">
-        <h2>أسئلة الامتحان</h2>
-        <div id="questionsContainer"></div>
-        <button class="btn" onclick="submitExam()">إرسال الإجابات</button>
+        <h2>Anatomy & Histology Questions</h2>
+        <div id="questionsContainer" class="english-text"></div>
+        <button class="btn" onclick="submitExam()">Submit Answers</button>
     </div>
 
     <div class="container hidden" id="resultPanel">
-        <h2 id="resultTitle">جاري تصحيح وإرسال النتيجة...</h2>
+        <h2 id="resultTitle">Processing...</h2>
         <p id="resultMessage" style="text-align: center; font-size: 18px;">
-            يرجى عدم إغلاق الصفحة حتى ظهور رسالة التأكيد.
+            Please wait...
         </p>
     </div>
 
     <script>
-        // === إعدادات الربط ===
+        // === إعدادات EmailJS ===
         const SERVICE_ID = "service_svl2igw";
         const TEMPLATE_ID = "template_hib0kla";
 
-        // === الأسئلة (سيتم استبدالها لاحقاً بـ 40 سؤال) ===
+        // === قاعدة بيانات الأسئلة ===
         const questions = [
-            {
-                id: 1,
-                text: "سؤال تجربة 1: ما هو الرمز الكيميائي للماء؟ (MCQ)",
-                type: "mcq",
-                options: ["HO", "H2O", "O2", "CO2"],
-                correct: "H2O"
-            },
-            {
-                id: 2,
-                text: "سؤال تجربة 2: الشمس تدور حول الأرض. (T/F)",
-                type: "tf",
-                options: ["True", "False"],
-                correct: "False"
-            }
+            // --- Part 1: True / False ---
+            { id: 1, text: "1. Synovial joints have articulating bones held together by cartilage.", type: "tf", options: ["True", "False"], correct: "False" },
+            { id: 2, text: "2. Smooth muscle is different from skeletal muscle because smooth muscle is found in the walls of arteries.", type: "tf", options: ["True", "False"], correct: "True" },
+            { id: 3, text: "3. Deltoid muscle is named according to its origin and insertion.", type: "tf", options: ["True", "False"], correct: "False" },
+            { id: 4, text: "4. Smooth muscle cells may be described by not striated, involuntary, uninucleate.", type: "tf", options: ["True", "False"], correct: "True" },
+            { id: 5, text: "5. Antagonist term is a muscle that opposes or reverses a particular movement.", type: "tf", options: ["True", "False"], correct: "True" },
+            { id: 6, text: "6. Tendon is something that attaches a bone to another bone.", type: "tf", options: ["True", "False"], correct: "False" },
+            { id: 7, text: "7. An efferent artery is a small artery.", type: "tf", options: ["True", "False"], correct: "False" },
+            { id: 8, text: "8. Somatic nervous system is that part of the nervous system that carries commands to the skeletal muscles.", type: "tf", options: ["True", "False"], correct: "True" },
+            { id: 9, text: "9. Parasympathetic nervous system prepares you for vigorous activity ('to fight or flee').", type: "tf", options: ["True", "False"], correct: "False" },
+            { id: 10, text: "10. 'Sympathetic' and 'parasympathetic' refer to divisions of the somatic nervous system.", type: "tf", options: ["True", "False"], correct: "False" },
+
+            // --- Part 2: MCQ ---
+            { id: 11, text: "11. Synovial joints have all of the following features EXCEPT one. Which one?", type: "mcq", options: ["A. are surrounded by an articular capsule.", "B. have synovial fluid filling the space between articulating bones.", "C. have synovial membrane covering the articulating bone surfaces.", "D. are supported by reinforcing ligaments"], correct: "C. have synovial membrane covering the articulating bone surfaces." },
+            { id: 12, text: "12. Articulating bones are joined by:", type: "mcq", options: ["A. aponeuroses", "B. tendons", "C. fasciculi", "D. ligaments"], correct: "D. ligaments" },
+            { id: 13, text: "13. What does 'articulation' refer to?", type: "mcq", options: ["A. the joining of a ligament to a bone.", "B. the contact made between a tendon and a bone.", "C. the contact between two bones.", "D. the connection between a muscle and a bone"], correct: "C. the contact between two bones." },
+            { id: 14, text: "14. How do synovial joints differ from the other types of bone articulation?", type: "mcq", options: ["A. they have a joint cavity", "B. the bones are joined by fibrous tissue.", "C. the articulating bones are joined by cartilage.", "D. the articulating bone surfaces are covered by tendons."], correct: "A. they have a joint cavity" },
+            { id: 15, text: "15. What are the cells that are found in the lacunae of compact bone called?", type: "mcq", options: ["A. osteocytes.", "B. osteons.", "C. osteoblasts.", "D. osteoclasts."], correct: "A. osteocytes." },
+            { id: 16, text: "16. Synovial joints differ from the other types of joint between bones in the body because:", type: "mcq", options: ["A. they are immovable joints.", "B. they are slightly moveable", "C. the bones are joined by cartilage.", "D. the ends of the articulating bones are covered by hyaline cartilage."], correct: "D. the ends of the articulating bones are covered by hyaline cartilage." },
+            { id: 17, text: "17. What is the structure that attaches one bone to another?", type: "mcq", options: ["A. ligament", "B. cartilage", "C. tendon", "D. diaphysis"], correct: "A. ligament" },
+            { id: 18, text: "18. Blood cell formation (haemopoiesis) occurs in which of the following structures?", type: "mcq", options: ["A. red marrow", "B. yellow marrow", "C. medullary cavity", "D. epiphyseal plate"], correct: "A. red marrow" },
+            { id: 19, text: "19. What is the role of hyaline cartilage in the body?", type: "mcq", options: ["A. it attaches muscle to bone.", "B. it reinforces joints by tying one bone to another.", "C. It covers articulating bone surfaces.", "D. it produces synovial fluid"], correct: "C. It covers articulating bone surfaces." },
+            { id: 20, text: "20. The functions of bones may be stated as:", type: "mcq", options: ["A. fat storage, movement, mineral storage, protection, blood cell formation.", "B. mineral storage, haemopoiesis, movement, leverage, protection.", "C. blood cell formation, hormone production, movement, support, protection.", "D. support, storage, movement, haemopoiesis, protection"], correct: "D. support, storage, movement, haemopoiesis, protection" }
         ];
 
         let studentInfo = { name: "", telegram: "" };
         let userAnswers = {};
 
-        // دالة البدء
         function startExam() {
             const nameInput = document.getElementById('studentName').value;
             const teleInput = document.getElementById('telegramID').value;
 
             if(nameInput.trim() === "" || teleInput.trim() === "") {
-                alert("عذراً، يجب كتابة الاسم والمعرف للمتابعة.");
+                alert("Please enter your Name and Telegram ID.");
                 return;
             }
 
@@ -177,7 +205,6 @@
             renderQuestions();
         }
 
-        // دالة عرض الأسئلة
         function renderQuestions() {
             const container = document.getElementById('questionsContainer');
             let htmlContent = "";
@@ -187,8 +214,8 @@
                 q.options.forEach(opt => {
                     optionsHTML += `
                         <li>
-                            <label style="font-weight: normal; cursor: pointer; display: block; width: 100%;">
-                                <input type="radio" name="q${q.id}" value="${opt}" onchange="saveAnswer(${q.id}, '${opt}')"> 
+                            <label>
+                                <input type="radio" name="q${q.id}" value="${opt}" onclick="saveAnswer(${q.id}, '${opt}')"> 
                                 ${opt}
                             </label>
                         </li>
@@ -197,7 +224,7 @@
 
                 htmlContent += `
                     <div class="question-box">
-                        <label>${index + 1}. ${q.text}</label>
+                        <label><strong>${q.text}</strong></label>
                         <ul class="options-list">
                             ${optionsHTML}
                         </ul>
@@ -208,14 +235,36 @@
             container.innerHTML = htmlContent;
         }
 
-        // حفظ الإجابة عند الاختيار
         function saveAnswer(questionId, answer) {
             userAnswers[questionId] = answer;
         }
 
-        // دالة التسليم والإرسال
         function submitExam() {
-            // حساب الدرجة
+            // === 1. التحقق وتحديد الأسئلة الفارغة ===
+            let missingQuestions = [];
+            
+            questions.forEach((q, index) => {
+                // index + 1 لأن المصفوفة تبدأ من 0 ونريد العرض يبدأ من 1
+                if (!userAnswers.hasOwnProperty(q.id)) {
+                    missingQuestions.push(index + 1);
+                }
+            });
+
+            if (missingQuestions.length > 0) {
+                // تجهيز رسالة التنبيه بالأرقام
+                const msg = `تنبيه: يوجد أسئلة غير مجابة!\n` +
+                            `أرقام الأسئلة المتروكة: [ ${missingQuestions.join(' ، ')} ]\n\n` +
+                            `اضغط "موافق" (OK) للتسليم وتركها فارغة.\n` +
+                            `اضغط "إلغاء" (Cancel) للعودة للإجابة.`;
+                
+                // إذا ضغط إلغاء، نوقف الدالة هنا
+                if (!confirm(msg)) {
+                    return;
+                }
+            }
+            // =======================================
+
+            // 2. حساب الدرجة
             let score = 0;
             questions.forEach(q => {
                 if(userAnswers[q.id] === q.correct) {
@@ -223,11 +272,10 @@
                 }
             });
 
-            // الانتقال لشاشة التحميل
+            // 3. عرض شاشة الانتظار
             document.getElementById('examPanel').classList.add('hidden');
             document.getElementById('resultPanel').classList.remove('hidden');
 
-            // تجهيز البيانات للقالب
             const templateParams = {
                 student_name: studentInfo.name,
                 telegram_id: studentInfo.telegram,
@@ -235,22 +283,21 @@
                 total_questions: questions.length
             };
 
-            // الإرسال الفعلي عبر EmailJS
+            // 4. الإرسال
             emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams)
                 .then(function(response) {
-                    console.log('SUCCESS!', response.status, response.text);
-                    document.getElementById('resultTitle').innerText = "تم استلام الامتحان بنجاح ✅";
+                    document.getElementById('resultTitle').innerText = "Exam Submitted Successfully ✅";
                     document.getElementById('resultTitle').style.color = "green";
                     document.getElementById('resultMessage').innerHTML = `
-                        شكراً لك يا <strong>${studentInfo.name}</strong>.<br><br>
-                        تم تسجيل إجاباتك وإرسال النتيجة إلى المشرف.<br>
-                        درجتك: <strong>${score} / ${questions.length}</strong>
+                        Thank you <strong>${studentInfo.name}</strong>.<br><br>
+                        Your answers have been recorded.<br>
+                        Good Luck!
                     `;
                 }, function(error) {
                     console.log('FAILED...', error);
-                    document.getElementById('resultTitle').innerText = "حدث خطأ في الإرسال ❌";
+                    alert("Error Details:\n" + JSON.stringify(error));
+                    document.getElementById('resultTitle').innerText = "Submission Failed ❌";
                     document.getElementById('resultTitle').style.color = "red";
-                    document.getElementById('resultMessage').innerText = "تأكد من الاتصال بالإنترنت، أو تواصل مع المشرف.";
                 });
         }
     </script>

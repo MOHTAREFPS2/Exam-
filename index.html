@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>امتحان التشريح - Anatomy Exam</title>
+    <title>Anatomy Exam - Final Clean Version</title>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script type="text/javascript">
        (function(){
-          // Public Key
           emailjs.init("o-XlLiO769IOYV68R");
        })();
     </script>
@@ -62,11 +61,15 @@
             border-color: #1877f2;
             outline: none;
         }
-        .note-text {
+        .telegram-note {
+            background-color: #eef3f8;
+            border-right: 4px solid #1877f2;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 4px;
             font-size: 13px;
-            color: #606770;
-            margin-top: 5px;
-            display: block;
+            color: #444;
+            line-height: 1.5;
         }
         .btn {
             display: block;
@@ -84,6 +87,10 @@
         }
         .btn:hover {
             background-color: #166fe5;
+        }
+        .btn-disabled {
+            background-color: #ccc !important;
+            cursor: not-allowed;
         }
         .question-box {
             margin-bottom: 30px;
@@ -108,7 +115,6 @@
             background-color: #e7f3ff;
             border-color: #1877f2;
         }
-        /* جعل منطقة النقر تغطي كامل المربع */
         .options-list li label {
             display: block;
             width: 100%;
@@ -134,7 +140,10 @@
         <div class="form-group">
             <label>معرف التيليجرام (Telegram User):</label>
             <input type="text" id="telegramID" placeholder="@username">
-            <small class="note-text">معرف التيليكرام سيستخدم للتواصل معك في حال كنت الأعلى درجة. ✍️يمكنك كتابة none في الخانة في حال لم يكن لديك معرف او رغبت بعدم مشاركته.</small>
+            <div class="telegram-note">
+                <strong>ملاحظة:</strong> معرف التيليكرام سيستخدم للتواصل معك في حال كنت الأعلى درجة. 
+                <br>✍️ يمكنك كتابة <strong>none</strong> في الخانة في حال لم يكن لديك معرف أو رغبت بعدم مشاركته.
+            </div>
         </div>
         <button class="btn" onclick="startExam()">Start Exam</button>
     </div>
@@ -142,7 +151,7 @@
     <div class="container hidden" id="examPanel">
         <h2>Anatomy & Histology Questions</h2>
         <div id="questionsContainer" class="english-text"></div>
-        <button class="btn" onclick="submitExam()">Submit Answers</button>
+        <button id="submitBtn" class="btn" onclick="submitExam()">Submit Answers</button>
     </div>
 
     <div class="container hidden" id="resultPanel">
@@ -153,13 +162,12 @@
     </div>
 
     <script>
-        // === إعدادات EmailJS ===
         const SERVICE_ID = "service_svl2igw";
         const TEMPLATE_ID = "template_hib0kla";
 
-        // === قاعدة بيانات الأسئلة ===
+        // === الأسئلة (48 سؤال - تم حذف المكرر) ===
         const questions = [
-            // --- Part 1: True / False ---
+            // --- المجموعة 1: True / False القديمة (10 أسئلة) ---
             { id: 1, text: "1. Synovial joints have articulating bones held together by cartilage.", type: "tf", options: ["True", "False"], correct: "False" },
             { id: 2, text: "2. Smooth muscle is different from skeletal muscle because smooth muscle is found in the walls of arteries.", type: "tf", options: ["True", "False"], correct: "True" },
             { id: 3, text: "3. Deltoid muscle is named according to its origin and insertion.", type: "tf", options: ["True", "False"], correct: "False" },
@@ -170,18 +178,52 @@
             { id: 8, text: "8. Somatic nervous system is that part of the nervous system that carries commands to the skeletal muscles.", type: "tf", options: ["True", "False"], correct: "True" },
             { id: 9, text: "9. Parasympathetic nervous system prepares you for vigorous activity ('to fight or flee').", type: "tf", options: ["True", "False"], correct: "False" },
             { id: 10, text: "10. 'Sympathetic' and 'parasympathetic' refer to divisions of the somatic nervous system.", type: "tf", options: ["True", "False"], correct: "False" },
+            
+            // --- المجموعة 2: True / False الجديدة (18 سؤال - تم حذف 2 مكرر) ---
+            { id: 11, text: "11. Human anatomy is the study of the structure of the human body.", type: "tf", options: ["True", "False"], correct: "True" },
+            { id: 12, text: "12. Human ankle consist of (7) bones.", type: "tf", options: ["True", "False"], correct: "True" },
+            { id: 13, text: "13. Fibrous cartilage is present at the joints of long bones in humans.", type: "tf", options: ["True", "False"], correct: "False" },
+            { id: 14, text: "14. Septum keep blood flowing unidirectionally in humans.", type: "tf", options: ["True", "False"], correct: "False" },
+            { id: 15, text: "15. Human heart made up of tissues.", type: "tf", options: ["True", "False"], correct: "False" },
+            { id: 16, text: "16. Meta Arterioles is the thinnest blood vessel.", type: "tf", options: ["True", "False"], correct: "False" },
+            { id: 17, text: "17. The arteries are composed of 4 coat.", type: "tf", options: ["True", "False"], correct: "False" },
+            { id: 18, text: "18. Thoracic cavity is the largest hollow space of the body.", type: "tf", options: ["True", "False"], correct: "False" },
+            { id: 19, text: "19. The smallest bone is found IN Nose.", type: "tf", options: ["True", "False"], correct: "False" },
+            // تم حذف سؤال Tendons المكرر هنا
+            // تم حذف سؤال Synovial/Cartilage المكرر هنا
+            { id: 22, text: "20. Cartilaginous joints has a restricted range of motion.", type: "tf", options: ["True", "False"], correct: "True" },
+            { id: 23, text: "21. Hinge joint Between atlas and axis.", type: "tf", options: ["True", "False"], correct: "False" },
+            { id: 24, text: "22. Saddle joint Between the carpals.", type: "tf", options: ["True", "False"], correct: "False" },
+            { id: 25, text: "23. Collections of nerve cell bodies inside the PNS are called tracts.", type: "tf", options: ["True", "False"], correct: "False" },
+            { id: 26, text: "24. A neuron with a cell body located in the CNS whose primary function is connecting other neurons is called a(n) satellite cell.", type: "tf", options: ["True", "False"], correct: "False" },
+            { id: 27, text: "25. Afferent nerves are called mixed nerves, and motor nerves are called motor nerves.", type: "tf", options: ["True", "False"], correct: "True" },
+            { id: 28, text: "26. Nerves is the unit of Nervous system.", type: "tf", options: ["True", "False"], correct: "False" },
+            { id: 29, text: "27. Preganglionic neurons lie within parasympathetic nervous system.", type: "tf", options: ["True", "False"], correct: "False" },
+            { id: 30, text: "28. Ganglion is not a part of peripheral nervous system.", type: "tf", options: ["True", "False"], correct: "False" },
 
-            // --- Part 2: MCQ ---
-            { id: 11, text: "11. Synovial joints have all of the following features EXCEPT one. Which one?", type: "mcq", options: ["A. are surrounded by an articular capsule.", "B. have synovial fluid filling the space between articulating bones.", "C. have synovial membrane covering the articulating bone surfaces.", "D. are supported by reinforcing ligaments"], correct: "C. have synovial membrane covering the articulating bone surfaces." },
-            { id: 12, text: "12. Articulating bones are joined by:", type: "mcq", options: ["A. aponeuroses", "B. tendons", "C. fasciculi", "D. ligaments"], correct: "D. ligaments" },
-            { id: 13, text: "13. What does 'articulation' refer to?", type: "mcq", options: ["A. the joining of a ligament to a bone.", "B. the contact made between a tendon and a bone.", "C. the contact between two bones.", "D. the connection between a muscle and a bone"], correct: "C. the contact between two bones." },
-            { id: 14, text: "14. How do synovial joints differ from the other types of bone articulation?", type: "mcq", options: ["A. they have a joint cavity", "B. the bones are joined by fibrous tissue.", "C. the articulating bones are joined by cartilage.", "D. the articulating bone surfaces are covered by tendons."], correct: "A. they have a joint cavity" },
-            { id: 15, text: "15. What are the cells that are found in the lacunae of compact bone called?", type: "mcq", options: ["A. osteocytes.", "B. osteons.", "C. osteoblasts.", "D. osteoclasts."], correct: "A. osteocytes." },
-            { id: 16, text: "16. Synovial joints differ from the other types of joint between bones in the body because:", type: "mcq", options: ["A. they are immovable joints.", "B. they are slightly moveable", "C. the bones are joined by cartilage.", "D. the ends of the articulating bones are covered by hyaline cartilage."], correct: "D. the ends of the articulating bones are covered by hyaline cartilage." },
-            { id: 17, text: "17. What is the structure that attaches one bone to another?", type: "mcq", options: ["A. ligament", "B. cartilage", "C. tendon", "D. diaphysis"], correct: "A. ligament" },
-            { id: 18, text: "18. Blood cell formation (haemopoiesis) occurs in which of the following structures?", type: "mcq", options: ["A. red marrow", "B. yellow marrow", "C. medullary cavity", "D. epiphyseal plate"], correct: "A. red marrow" },
-            { id: 19, text: "19. What is the role of hyaline cartilage in the body?", type: "mcq", options: ["A. it attaches muscle to bone.", "B. it reinforces joints by tying one bone to another.", "C. It covers articulating bone surfaces.", "D. it produces synovial fluid"], correct: "C. It covers articulating bone surfaces." },
-            { id: 20, text: "20. The functions of bones may be stated as:", type: "mcq", options: ["A. fat storage, movement, mineral storage, protection, blood cell formation.", "B. mineral storage, haemopoiesis, movement, leverage, protection.", "C. blood cell formation, hormone production, movement, support, protection.", "D. support, storage, movement, haemopoiesis, protection"], correct: "D. support, storage, movement, haemopoiesis, protection" }
+            // --- المجموعة 3: MCQ القديمة (10 أسئلة) ---
+            { id: 31, text: "29. Synovial joints have all of the following features EXCEPT one. Which one?", type: "mcq", options: ["A. are surrounded by an articular capsule.", "B. have synovial fluid filling the space between articulating bones.", "C. have synovial membrane covering the articulating bone surfaces.", "D. are supported by reinforcing ligaments"], correct: "C. have synovial membrane covering the articulating bone surfaces." },
+            { id: 32, text: "30. Articulating bones are joined by:", type: "mcq", options: ["A. aponeuroses", "B. tendons", "C. fasciculi", "D. ligaments"], correct: "D. ligaments" },
+            { id: 33, text: "31. What does 'articulation' refer to?", type: "mcq", options: ["A. the joining of a ligament to a bone.", "B. the contact made between a tendon and a bone.", "C. the contact between two bones.", "D. the connection between a muscle and a bone"], correct: "C. the contact between two bones." },
+            { id: 34, text: "32. How do synovial joints differ from the other types of bone articulation?", type: "mcq", options: ["A. they have a joint cavity", "B. the bones are joined by fibrous tissue.", "C. the articulating bones are joined by cartilage.", "D. the articulating bone surfaces are covered by tendons."], correct: "A. they have a joint cavity" },
+            { id: 35, text: "33. What are the cells that are found in the lacunae of compact bone called?", type: "mcq", options: ["A. osteocytes.", "B. osteons.", "C. osteoblasts.", "D. osteoclasts."], correct: "A. osteocytes." },
+            { id: 36, text: "34. Synovial joints differ from the other types of joint between bones in the body because:", type: "mcq", options: ["A. they are immovable joints.", "B. they are slightly moveable", "C. the bones are joined by cartilage.", "D. the ends of the articulating bones are covered by hyaline cartilage."], correct: "D. the ends of the articulating bones are covered by hyaline cartilage." },
+            { id: 37, text: "35. What is the structure that attaches one bone to another?", type: "mcq", options: ["A. ligament", "B. cartilage", "C. tendon", "D. diaphysis"], correct: "A. ligament" },
+            { id: 38, text: "36. Blood cell formation (haemopoiesis) occurs in which of the following structures?", type: "mcq", options: ["A. red marrow", "B. yellow marrow", "C. medullary cavity", "D. epiphyseal plate"], correct: "A. red marrow" },
+            { id: 39, text: "37. What is the role of hyaline cartilage in the body?", type: "mcq", options: ["A. it attaches muscle to bone.", "B. it reinforces joints by tying one bone to another.", "C. It covers articulating bone surfaces.", "D. it produces synovial fluid"], correct: "C. It covers articulating bone surfaces." },
+            { id: 40, text: "38. The functions of bones may be stated as:", type: "mcq", options: ["A. fat storage, movement, mineral storage, protection, blood cell formation.", "B. mineral storage, haemopoiesis, movement, leverage, protection.", "C. blood cell formation, hormone production, movement, support, protection.", "D. support, storage, movement, haemopoiesis, protection"], correct: "D. support, storage, movement, haemopoiesis, protection" },
+            
+            // --- المجموعة 4: MCQ الجديدة (10 أسئلة) ---
+            { id: 41, text: "39. Which the following is not the unique features of synovial joint?", type: "mcq", options: ["A. Articular capsule", "B. Articular cartilage", "C. Synovial fluid", "D. Fibro cartilage"], correct: "D. Fibro cartilage" },
+            { id: 42, text: "40. Which of the following statement is NOT true?", type: "mcq", options: ["A. Condyloid joint is triaxial", "B. Synovial fluid reduces friction", "C. Coronal suture is for parietal and frontal bone articulation", "D. Synostosis is a bony joint"], correct: "A. Condyloid joint is triaxial" },
+            { id: 43, text: "41. Which of the following are the part of functional classification?", type: "mcq", options: ["A. Ellipsoidal", "B. Gomphosis", "C. Syndesmoses", "D. None of the above"], correct: "D. None of the above" },
+            { id: 44, text: "42. Which of the following is known as a bony joint?", type: "mcq", options: ["A. Synostosis", "B. Symphysis", "C. Syndesmoses", "D. Interosseous membrane"], correct: "A. Synostosis" },
+            { id: 45, text: "43. Which of the following movements are possible in pivot joint?", type: "mcq", options: ["A. Flexion and extension", "B. Adduction and abduction", "C. Rotation", "D. Extension flexion and rotation"], correct: "C. Rotation" },
+            { id: 46, text: "44. Which of the following comes under structural classification?", type: "mcq", options: ["A. Synchondroses", "B. Sutures", "C. Gomphosis", "D. All of the above"], correct: "D. All of the above" },
+            { id: 47, text: "45. Which of the following is an example of syndesmoses?", type: "mcq", options: ["A. Coronal suture", "B. Distal tibiofibular joint", "C. Hip joint", "D. Intercarpal joints"], correct: "B. Distal tibiofibular joint" },
+            { id: 48, text: "46. Which of the following is not a joint function?", type: "mcq", options: ["A. Articulations", "B. Allows bone growth", "C. Enables mobility", "D. Supports body"], correct: "B. Allows bone growth" },
+            { id: 49, text: "47. What do joints do when they move?", type: "mcq", options: ["A. Effort", "B. Lever", "C. Fulcrum", "D. Load"], correct: "C. Fulcrum" },
+            { id: 50, text: "48. What is the sort of joint that connects the neighbouring vertebrae?", type: "mcq", options: ["A. Pivot joint", "B. Fibrous joint", "C. Cartilaginous joint", "D. Gliding joint"], correct: "C. Cartilaginous joint" }
         ];
 
         let studentInfo = { name: "", telegram: "" };
@@ -231,7 +273,6 @@
                     </div>
                 `;
             });
-
             container.innerHTML = htmlContent;
         }
 
@@ -239,32 +280,47 @@
             userAnswers[questionId] = answer;
         }
 
-        function submitExam() {
-            // === 1. التحقق وتحديد الأسئلة الفارغة ===
+        async function submitExam() {
+            // 1. فحص الأسئلة المتروكة
             let missingQuestions = [];
-            
             questions.forEach((q, index) => {
-                // index + 1 لأن المصفوفة تبدأ من 0 ونريد العرض يبدأ من 1
                 if (!userAnswers.hasOwnProperty(q.id)) {
+                    // نستخدم الرقم التسلسلي للعرض (index + 1)
                     missingQuestions.push(index + 1);
                 }
             });
 
             if (missingQuestions.length > 0) {
-                // تجهيز رسالة التنبيه بالأرقام
                 const msg = `تنبيه: يوجد أسئلة غير مجابة!\n` +
                             `أرقام الأسئلة المتروكة: [ ${missingQuestions.join(' ، ')} ]\n\n` +
                             `اضغط "موافق" (OK) للتسليم وتركها فارغة.\n` +
                             `اضغط "إلغاء" (Cancel) للعودة للإجابة.`;
-                
-                // إذا ضغط إلغاء، نوقف الدالة هنا
-                if (!confirm(msg)) {
-                    return;
-                }
+                if (!confirm(msg)) return;
             }
-            // =======================================
 
-            // 2. حساب الدرجة
+            // 2. فحص الاتصال (Kill Switch)
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.innerHTML = "جاري التحقق...";
+            submitBtn.classList.add('btn-disabled');
+            
+            try {
+                // cache: no-store ضروري لمنع المتصفح من حفظ حالة الملف
+                const response = await fetch('status.txt', { cache: "no-store" });
+                
+                if (!response.ok) {
+                    throw new Error("Exam Closed");
+                }
+                
+                processAndSend();
+
+            } catch (error) {
+                alert("⛔ عذراً، انتهى وقت الامتحان وتم إغلاق النظام.\nلا يمكن تسليم الإجابة الآن.");
+                submitBtn.innerHTML = "انتهى الوقت";
+                return; 
+            }
+        }
+
+        function processAndSend() {
             let score = 0;
             questions.forEach(q => {
                 if(userAnswers[q.id] === q.correct) {
@@ -272,7 +328,6 @@
                 }
             });
 
-            // 3. عرض شاشة الانتظار
             document.getElementById('examPanel').classList.add('hidden');
             document.getElementById('resultPanel').classList.remove('hidden');
 
@@ -283,7 +338,6 @@
                 total_questions: questions.length
             };
 
-            // 4. الإرسال
             emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams)
                 .then(function(response) {
                     document.getElementById('resultTitle').innerText = "Exam Submitted Successfully ✅";

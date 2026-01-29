@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>امتحان الطالب - تجريبي</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+       (function(){
+          // تفعيل المكتبة بالمفتاح الخاص بك
+          emailjs.init("o-XlLiO769IOYV68R");
+       })();
+    </script>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            color: #1c1e21;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border: 1px solid #ddd;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #1877f2;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus {
+            border-color: #1877f2;
+            outline: none;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #1877f2;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 30px;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #166fe5;
+        }
+        .question-box {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .options-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .options-list li {
+            margin: 10px 0;
+            background: #fff;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .options-list li:hover {
+            background-color: #e7f3ff;
+            border-color: #1877f2;
+        }
+        /* كلاسات التحكم في الظهور والاختفاء */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="loginPanel">
+        <h1>تسجيل بيانات الطالب</h1>
+        <div class="form-group">
+            <label>الاسم الثلاثي:</label>
+            <input type="text" id="studentName" placeholder="مثال: محمد أحمد علي">
+        </div>
+        <div class="form-group">
+            <label>معرف التيليجرام (@username):</label>
+            <input type="text" id="telegramID" placeholder="@example">
+        </div>
+        <button class="btn" onclick="startExam()">دخول الامتحان</button>
+    </div>
+
+    <div class="container hidden" id="examPanel">
+        <h2>أسئلة الامتحان</h2>
+        <div id="questionsContainer"></div>
+        <button class="btn" onclick="submitExam()">إرسال الإجابات</button>
+    </div>
+
+    <div class="container hidden" id="resultPanel">
+        <h2 id="resultTitle">جاري تصحيح وإرسال النتيجة...</h2>
+        <p id="resultMessage" style="text-align: center; font-size: 18px;">
+            يرجى عدم إغلاق الصفحة حتى ظهور رسالة التأكيد.
+        </p>
+    </div>
+
+    <script>
+        // === إعدادات الربط ===
+        const SERVICE_ID = "service_svl2igw";
+        const TEMPLATE_ID = "Template_hib0kla";
+
+        // === الأسئلة (سيتم استبدالها لاحقاً بـ 40 سؤال) ===
+        const questions = [
+            {
+                id: 1,
+                text: "سؤال تجربة 1: ما هو الرمز الكيميائي للماء؟ (MCQ)",
+                type: "mcq",
+                options: ["HO", "H2O", "O2", "CO2"],
+                correct: "H2O"
+            },
+            {
+                id: 2,
+                text: "سؤال تجربة 2: الشمس تدور حول الأرض. (T/F)",
+                type: "tf",
+                options: ["True", "False"],
+                correct: "False"
+            }
+        ];
+
+        let studentInfo = { name: "", telegram: "" };
+        let userAnswers = {};
+
+        // دالة البدء
+        function startExam() {
+            const nameInput = document.getElementById('studentName').value;
+            const teleInput = document.getElementById('telegramID').value;
+
+            if(nameInput.trim() === "" || teleInput.trim() === "") {
+                alert("عذراً، يجب كتابة الاسم والمعرف للمتابعة.");
+                return;
+            }
+
+            studentInfo.name = nameInput;
+            studentInfo.telegram = teleInput;
+
+            document.getElementById('loginPanel').classList.add('hidden');
+            document.getElementById('examPanel').classList.remove('hidden');
+            
+            renderQuestions();
+        }
+
+        // دالة عرض الأسئلة
+        function renderQuestions() {
+            const container = document.getElementById('questionsContainer');
+            let htmlContent = "";
+
+            questions.forEach((q, index) => {
+                let optionsHTML = "";
+                q.options.forEach(opt => {
+                    optionsHTML += `
+                        <li>
+                            <label style="font-weight: normal; cursor: pointer; display: block; width: 100%;">
+                                <input type="radio" name="q${q.id}" value="${opt}" onchange="saveAnswer(${q.id}, '${opt}')"> 
+                                ${opt}
+                            </label>
+                        </li>
+                    `;
+                });
+
+                htmlContent += `
+                    <div class="question-box">
+                        <label>${index + 1}. ${q.text}</label>
+                        <ul class="options-list">
+                            ${optionsHTML}
+                        </ul>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = htmlContent;
+        }
+
+        // حفظ الإجابة عند الاختيار
+        function saveAnswer(questionId, answer) {
+            userAnswers[questionId] = answer;
+        }
+
+        // دالة التسليم والإرسال
+        function submitExam() {
+            // حساب الدرجة
+            let score = 0;
+            questions.forEach(q => {
+                if(userAnswers[q.id] === q.correct) {
+                    score++;
+                }
+            });
+
+            // الانتقال لشاشة التحميل
+            document.getElementById('examPanel').classList.add('hidden');
+            document.getElementById('resultPanel').classList.remove('hidden');
+
+            // تجهيز البيانات للقالب
+            const templateParams = {
+                student_name: studentInfo.name,
+                telegram_id: studentInfo.telegram,
+                final_score: score,
+                total_questions: questions.length
+            };
+
+            // الإرسال الفعلي عبر EmailJS
+            emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams)
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    document.getElementById('resultTitle').innerText = "تم استلام الامتحان بنجاح ✅";
+                    document.getElementById('resultTitle').style.color = "green";
+                    document.getElementById('resultMessage').innerHTML = `
+                        شكراً لك يا <strong>${studentInfo.name}</strong>.<br><br>
+                        تم تسجيل إجاباتك وإرسال النتيجة إلى المشرف.<br>
+                        درجتك: <strong>${score} / ${questions.length}</strong>
+                    `;
+                }, function(error) {
+                    console.log('FAILED...', error);
+                    document.getElementById('resultTitle').innerText = "حدث خطأ في الإرسال ❌";
+                    document.getElementById('resultTitle').style.color = "red";
+                    document.getElementById('resultMessage').innerText = "تأكد من الاتصال بالإنترنت، أو تواصل مع المشرف.";
+                });
+        }
+    </script>
+</body>
+</html>

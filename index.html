@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anatomy Exam - Final Clean Version</title>
+    <title>Anatomy Exam - 2020 & 2021 & 2023</title>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script type="text/javascript">
        (function(){
@@ -165,9 +165,8 @@
         const SERVICE_ID = "service_svl2igw";
         const TEMPLATE_ID = "template_hib0kla";
 
-        // === الأسئلة (48 سؤال - تم حذف المكرر) ===
         const questions = [
-            // --- المجموعة 1: True / False القديمة (10 أسئلة) ---
+            // --- أسئلة الملف القديم (48 سؤال) ---
             { id: 1, text: "1. Synovial joints have articulating bones held together by cartilage.", type: "tf", options: ["True", "False"], correct: "False" },
             { id: 2, text: "2. Smooth muscle is different from skeletal muscle because smooth muscle is found in the walls of arteries.", type: "tf", options: ["True", "False"], correct: "True" },
             { id: 3, text: "3. Deltoid muscle is named according to its origin and insertion.", type: "tf", options: ["True", "False"], correct: "False" },
@@ -178,8 +177,6 @@
             { id: 8, text: "8. Somatic nervous system is that part of the nervous system that carries commands to the skeletal muscles.", type: "tf", options: ["True", "False"], correct: "True" },
             { id: 9, text: "9. Parasympathetic nervous system prepares you for vigorous activity ('to fight or flee').", type: "tf", options: ["True", "False"], correct: "False" },
             { id: 10, text: "10. 'Sympathetic' and 'parasympathetic' refer to divisions of the somatic nervous system.", type: "tf", options: ["True", "False"], correct: "False" },
-            
-            // --- المجموعة 2: True / False الجديدة (18 سؤال - تم حذف 2 مكرر) ---
             { id: 11, text: "11. Human anatomy is the study of the structure of the human body.", type: "tf", options: ["True", "False"], correct: "True" },
             { id: 12, text: "12. Human ankle consist of (7) bones.", type: "tf", options: ["True", "False"], correct: "True" },
             { id: 13, text: "13. Fibrous cartilage is present at the joints of long bones in humans.", type: "tf", options: ["True", "False"], correct: "False" },
@@ -189,8 +186,6 @@
             { id: 17, text: "17. The arteries are composed of 4 coat.", type: "tf", options: ["True", "False"], correct: "False" },
             { id: 18, text: "18. Thoracic cavity is the largest hollow space of the body.", type: "tf", options: ["True", "False"], correct: "False" },
             { id: 19, text: "19. The smallest bone is found IN Nose.", type: "tf", options: ["True", "False"], correct: "False" },
-            // تم حذف سؤال Tendons المكرر هنا
-            // تم حذف سؤال Synovial/Cartilage المكرر هنا
             { id: 22, text: "20. Cartilaginous joints has a restricted range of motion.", type: "tf", options: ["True", "False"], correct: "True" },
             { id: 23, text: "21. Hinge joint Between atlas and axis.", type: "tf", options: ["True", "False"], correct: "False" },
             { id: 24, text: "22. Saddle joint Between the carpals.", type: "tf", options: ["True", "False"], correct: "False" },
@@ -200,8 +195,6 @@
             { id: 28, text: "26. Nerves is the unit of Nervous system.", type: "tf", options: ["True", "False"], correct: "False" },
             { id: 29, text: "27. Preganglionic neurons lie within parasympathetic nervous system.", type: "tf", options: ["True", "False"], correct: "False" },
             { id: 30, text: "28. Ganglion is not a part of peripheral nervous system.", type: "tf", options: ["True", "False"], correct: "False" },
-
-            // --- المجموعة 3: MCQ القديمة (10 أسئلة) ---
             { id: 31, text: "29. Synovial joints have all of the following features EXCEPT one. Which one?", type: "mcq", options: ["A. are surrounded by an articular capsule.", "B. have synovial fluid filling the space between articulating bones.", "C. have synovial membrane covering the articulating bone surfaces.", "D. are supported by reinforcing ligaments"], correct: "C. have synovial membrane covering the articulating bone surfaces." },
             { id: 32, text: "30. Articulating bones are joined by:", type: "mcq", options: ["A. aponeuroses", "B. tendons", "C. fasciculi", "D. ligaments"], correct: "D. ligaments" },
             { id: 33, text: "31. What does 'articulation' refer to?", type: "mcq", options: ["A. the joining of a ligament to a bone.", "B. the contact made between a tendon and a bone.", "C. the contact between two bones.", "D. the connection between a muscle and a bone"], correct: "C. the contact between two bones." },
@@ -212,8 +205,6 @@
             { id: 38, text: "36. Blood cell formation (haemopoiesis) occurs in which of the following structures?", type: "mcq", options: ["A. red marrow", "B. yellow marrow", "C. medullary cavity", "D. epiphyseal plate"], correct: "A. red marrow" },
             { id: 39, text: "37. What is the role of hyaline cartilage in the body?", type: "mcq", options: ["A. it attaches muscle to bone.", "B. it reinforces joints by tying one bone to another.", "C. It covers articulating bone surfaces.", "D. it produces synovial fluid"], correct: "C. It covers articulating bone surfaces." },
             { id: 40, text: "38. The functions of bones may be stated as:", type: "mcq", options: ["A. fat storage, movement, mineral storage, protection, blood cell formation.", "B. mineral storage, haemopoiesis, movement, leverage, protection.", "C. blood cell formation, hormone production, movement, support, protection.", "D. support, storage, movement, haemopoiesis, protection"], correct: "D. support, storage, movement, haemopoiesis, protection" },
-            
-            // --- المجموعة 4: MCQ الجديدة (10 أسئلة) ---
             { id: 41, text: "39. Which the following is not the unique features of synovial joint?", type: "mcq", options: ["A. Articular capsule", "B. Articular cartilage", "C. Synovial fluid", "D. Fibro cartilage"], correct: "D. Fibro cartilage" },
             { id: 42, text: "40. Which of the following statement is NOT true?", type: "mcq", options: ["A. Condyloid joint is triaxial", "B. Synovial fluid reduces friction", "C. Coronal suture is for parietal and frontal bone articulation", "D. Synostosis is a bony joint"], correct: "A. Condyloid joint is triaxial" },
             { id: 43, text: "41. Which of the following are the part of functional classification?", type: "mcq", options: ["A. Ellipsoidal", "B. Gomphosis", "C. Syndesmoses", "D. None of the above"], correct: "D. None of the above" },
@@ -223,8 +214,42 @@
             { id: 47, text: "45. Which of the following is an example of syndesmoses?", type: "mcq", options: ["A. Coronal suture", "B. Distal tibiofibular joint", "C. Hip joint", "D. Intercarpal joints"], correct: "B. Distal tibiofibular joint" },
             { id: 48, text: "46. Which of the following is not a joint function?", type: "mcq", options: ["A. Articulations", "B. Allows bone growth", "C. Enables mobility", "D. Supports body"], correct: "B. Allows bone growth" },
             { id: 49, text: "47. What do joints do when they move?", type: "mcq", options: ["A. Effort", "B. Lever", "C. Fulcrum", "D. Load"], correct: "C. Fulcrum" },
-            { id: 50, text: "48. What is the sort of joint that connects the neighbouring vertebrae?", type: "mcq", options: ["A. Pivot joint", "B. Fibrous joint", "C. Cartilaginous joint", "D. Gliding joint"], correct: "C. Cartilaginous joint" }
-        ];
+            { id: 50, text: "48. What is the sort of joint that connects the neighbouring vertebrae?", type: "mcq", options: ["A. Pivot joint", "B. Fibrous joint", "C. Cartilaginous joint", "D. Gliding joint"], correct: "C. Cartilaginous joint" },
+// --- أسئلة ملف 2021 الجديدة (MCQ) ---
+            { id: 51, text: "49. Gross anatomy includes all of the following except:", type: "mcq", options: ["A. systemic anatomy", "B. surface anatomy", "C. cellular anatomy", "D. regional anatomy", "E. macroscopic anatomy"], correct: "C. cellular anatomy" },
+            { id: 52, text: "50. Microscopic anatomy includes:", type: "mcq", options: ["A. systemic anatomy", "B. surface anatomy", "C. cellular anatomy", "D. regional anatomy", "E. macroscopic anatomy"], correct: "C. cellular anatomy" },
+            { id: 53, text: "51. Which of the following planes divides the body into two equal lateral halves?", type: "mcq", options: ["A. midsagittal", "B. parasagittal", "C. frontal", "D. coronal", "E. transverse"], correct: "A. midsagittal" },
+            { id: 54, text: "52. Which choice best describes the location of the majority of the musculo-skeletal system?", type: "mcq", options: ["A. It is in the dorsal cavity", "B. It is in the ventral cavity", "C. It is in the abdomino-pelvic cavity", "D. It is not located in a body cavity"], correct: "D. It is not located in a body cavity" },
+            { id: 55, text: "53. Which of the following correctly describes the two named body parts?", type: "mcq", options: ["A. the elbow is proximal to the shoulder", "B. the phalanges are distal to the carpals", "C. the ribs are proximal to the sternum", "D. the elbow is distal to the knee"], correct: "B. the phalanges are distal to the carpals" },
+            { id: 56, text: "54. What are the bones of the fingers known as?", type: "mcq", options: ["A. short bones", "B. metacarpals", "C. carpals", "D. phalanges"], correct: "D. phalanges" },
+            { id: 57, text: "55. Which of the following comprise seven bones?", type: "mcq", options: ["A. Cervical vertebrae", "B. Carpals", "C. Cranial bones", "D. Lumbar vertebrae"], correct: "A. Cervical vertebrae" },
+            { id: 58, text: "56. What body part is able to perform pronation and supination?", type: "mcq", options: ["A. the forearm", "B. the foot", "C. the thigh", "D. the wrist"], correct: "A. the forearm" },
+            { id: 59, text: "57. Which of the following is NOT a depression or cavity on a bone?", type: "mcq", options: ["A. tuberosity", "B. facet", "C. meatus", "D. sinus"], correct: "A. tuberosity" },
+            { id: 60, text: "58. A synovial joint is also known as one of the following, which one?", type: "mcq", options: ["A. synarthrosis", "B. immovable joint", "C. slightly moveable joint", "D. freely moveable joint"], correct: "D. freely moveable joint" },
+            { id: 61, text: "59. Which of the following bone markings forms part of an articulation?", type: "mcq", options: ["A. the deltoid tuberosity of the humerus", "B. the lateral condyle of the femur", "C. the greater trochanter of the femur", "D. the greater tubercule of the humerus"], correct: "B. the lateral condyle of the femur" },
+            { id: 62, text: "60. Where is the epiphyseal plate of a long bone located?", type: "mcq", options: ["A. in the diaphysis", "B. between the diaphysis and the epiphysis", "C. in the epiphysis", "D. in the medullary canal"], correct: "B. between the diaphysis and the epiphysis" },
+            { id: 63, text: "61. Which of the following is NOT a projection from a bone surface?", type: "mcq", options: ["A. trochanter", "B. tubercle", "C. trabeculum", "D. tuberosity"], correct: "C. trabeculum" },
+            { id: 64, text: "62. Which of the following bone markings is NOT a projection for muscle attachment?", type: "mcq", options: ["A. fossa", "B. tuberosity", "C. tubercle", "D. trochanter"], correct: "A. fossa" },
+            { id: 65, text: "63. Freely moveable joints are also known as:", type: "mcq", options: ["A. fibrous joints", "B. cartilaginous joints", "C. amphiarthroses", "D. synovial joints"], correct: "D. synovial joints" },
+            // سؤال "Synovial joints features EXCEPT" (مكرر - تم تخطيه)
+
+            // --- أسئلة ملف 2021 الجديدة (True/False) ---
+            { id: 66, text: "64. Anatomy means the study of the function of living organisms and their parts.", type: "tf", options: ["True", "False"], correct: "False" },
+            { id: 67, text: "65. Prone position: It's when the body is lying opposite down (face down).", type: "tf", options: ["True", "False"], correct: "True" },
+            { id: 68, text: "66. Midsagittal section divides the body into mirror images.", type: "tf", options: ["True", "False"], correct: "True" },
+            { id: 69, text: "67. Doctors recommend putting babies to sleep on their backs (Supine position).", type: "tf", options: ["True", "False"], correct: "True" },
+            { id: 70, text: "68. The middle toe is medial to the big toe but lateral to the smallest toe.", type: "tf", options: ["True", "False"], correct: "False" },
+            { id: 71, text: "69. A frontal and coronal section refer to the same thing.", type: "tf", options: ["True", "False"], correct: "True" },
+            { id: 72, text: "70. A sagittal and midsagittal section refer to the same thing.", type: "tf", options: ["True", "False"], correct: "False" },
+            { id: 73, text: "71. A midsagittal plane divides the right shoulder from the left shoulder.", type: "tf", options: ["True", "False"], correct: "True" },
+            { id: 74, text: "72. A transverse plane divides the eyes from the back of the head.", type: "tf", options: ["True", "False"], correct: "False" },
+            { id: 75, text: "73. The frontal section divides the eyes from the back of the head.", type: "tf", options: ["True", "False"], correct: "True" },
+            { id: 76, text: "74. The anatomical position: body erect with arms at shoulder level, palms facing down.", type: "tf", options: ["True", "False"], correct: "False" },
+            { id: 77, text: "75. The anatomical position: body rigid, arms shoulder close, palms facing depressed.", type: "tf", options: ["True", "False"], correct: "False" },
+            { id: 78, text: "76. The most common type of lever in the body is the FIRST CLASS LEVER.", type: "tf", options: ["True", "False"], correct: "False" },
+            { id: 79, text: "77. The RETINACULUM is a thickening of fascia that holds structures in place.", type: "tf", options: ["True", "False"], correct: "True" },
+            { id: 80, text: "78. Usually, the tendon of a muscle attached to the more movable of the two bones is called the tendon of INSERTION.", type: "tf", options: ["True", "False"], correct: "True" },
+            { id: 81, text: "79. An APONEUROSIS is a broad, flat, tendinous sheet.", type: "tf", options: ["True", "False"], correct: "True" }];
 
         let studentInfo = { name: "", telegram: "" };
         let userAnswers = {};
@@ -285,7 +310,6 @@
             let missingQuestions = [];
             questions.forEach((q, index) => {
                 if (!userAnswers.hasOwnProperty(q.id)) {
-                    // نستخدم الرقم التسلسلي للعرض (index + 1)
                     missingQuestions.push(index + 1);
                 }
             });
@@ -304,7 +328,6 @@
             submitBtn.classList.add('btn-disabled');
             
             try {
-                // cache: no-store ضروري لمنع المتصفح من حفظ حالة الملف
                 const response = await fetch('status.txt', { cache: "no-store" });
                 
                 if (!response.ok) {
@@ -328,13 +351,17 @@
                 }
             });
 
+            // حساب النسبة المئوية
+            let percentage = Math.round((score / questions.length) * 100);
+            let finalResultText = `${score} (${percentage}%)`;
+
             document.getElementById('examPanel').classList.add('hidden');
             document.getElementById('resultPanel').classList.remove('hidden');
 
             const templateParams = {
                 student_name: studentInfo.name,
                 telegram_id: studentInfo.telegram,
-                final_score: score,
+                final_score: finalResultText,
                 total_questions: questions.length
             };
 
